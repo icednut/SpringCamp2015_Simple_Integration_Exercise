@@ -3,9 +3,9 @@
 RouterServer/.gradle
 RouterServer/.idea
 RouterServer/build
-SpringReceiveServer/.gradle
-SpringReceiveServer/.idea
-SpringReceiveServer/build
+SpringReceiveApp/.gradle
+SpringReceiveApp/.idea
+SpringReceiveApp/build
 
 *.iml
 *.ipr
