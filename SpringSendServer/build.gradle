@@ -6,21 +6,19 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") 
-        classpath("io.spring.gradle:dependency-management-plugin:0.4.1.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse-wtp'
-apply plugin: 'idea' 
-apply plugin: 'spring-boot'
-apply plugin: 'io.spring.dependency-management'
+apply plugin: 'idea'
+apply plugin: 'spring-boot' 
 apply plugin: 'war'
 
 
 war {
-    baseName = 'SpringReceiveApp'
+    baseName = 'SpringSendServer'
     version = '0.0.1-SNAPSHOT'
 }
 sourceCompatibility = 1.7
@@ -36,23 +34,23 @@ configurations {
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-hornetq")
-    compile("org.springframework.boot:spring-boot-starter-integration")
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-integration")
+    compile("org.springframework.integration:spring-integration-core")
 //    compile('org.springframework.integration:spring-integration-jmx:4.1.2.RELEASE')
     compile('org.springframework.integration:spring-integration-jms:4.1.2.RELEASE')
-    compile('org.springframework.integration:spring-integration-java-dsl:1.0.1.RELEASE')
-    compile('org.springframework.integration:spring-integration-stream:4.1.2.RELEASE')
+    compile("org.springframework.integration:spring-integration-java-dsl:1.0.1.RELEASE")
     compile('org.springframework.data:spring-data-commons:1.9.2.RELEASE')
 //    compile('org.springframework.security:spring-security-core:3.2.7.RELEASE')
 //    compile('org.springframework.security:spring-security-web:3.2.7.RELEASE')
 //    compile('org.springframework.security:spring-security-config:3.2.7.RELEASE')
-    compile('javax.el:javax.el-api:3.0.0')
+    compile("com.google.guava:guava:16.0.1")
     compile('org.apache.activemq:activemq-broker:5.11.1')
     compile('org.apache.activemq:activemq-kahadb-store:5.11.1')
+    compile('javax.el:javax.el-api:3.0.0')
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
-    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("org.springframework.boot:spring-boot-starter-test") 
 }
-
 
 eclipse {
     classpath {
@@ -61,7 +59,7 @@ eclipse {
     }
 }
 
-mainClassName = 'com.springcamp.integration.exercise.receiver.SpringReceiveAppApplication'
+mainClassName = 'com.springcamp.integration.exercise.SpringIntegrationExerciseApplication'
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'

@@ -1,13 +1,13 @@
 .DS_Store
-
-RouterServer/.gradle
-RouterServer/.idea
-RouterServer/build
-RouterServer/activemq-data
-SpringReceiveApp/.gradle
-SpringReceiveApp/.idea
-SpringReceiveApp/build
-SpringReceiveApp/activemq-data
+.idea/
+SpringSendServer/.gradle
+SpringSendServer/.idea
+SpringSendServer/build
+SpringSendServer/activemq-data
+SpringReceiveServer/.gradle
+SpringReceiveServer/.idea
+SpringReceiveServer/build
+SpringReceiveServer/activemq-data
 
 *.iml
 *.ipr
