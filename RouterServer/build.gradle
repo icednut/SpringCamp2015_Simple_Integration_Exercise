@@ -1,0 +1,66 @@
+buildscript {
+    ext {
+        springBootVersion = '1.2.2.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'idea'
+apply plugin: 'spring-boot' 
+apply plugin: 'war'
+
+
+war {
+    baseName = 'springIntegrationExercise'
+    version = '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    providedRuntime
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-hornetq")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-integration")
+    compile("org.springframework.integration:spring-integration-core")
+//    compile('org.springframework.integration:spring-integration-jmx:4.1.2.RELEASE')
+    compile('org.springframework.integration:spring-integration-jms:4.1.2.RELEASE')
+    compile("org.springframework.integration:spring-integration-java-dsl:1.0.1.RELEASE")
+    compile('org.springframework.data:spring-data-commons:1.9.2.RELEASE')
+//    compile('org.springframework.security:spring-security-core:3.2.7.RELEASE')
+//    compile('org.springframework.security:spring-security-web:3.2.7.RELEASE')
+//    compile('org.springframework.security:spring-security-config:3.2.7.RELEASE')
+    compile("com.google.guava:guava:16.0.1")
+    compile('org.apache.activemq:activemq-broker:5.11.1')
+    compile('org.apache.activemq:activemq-kahadb-store:5.11.1')
+    compile('javax.el:javax.el-api:3.0.0')
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+    testCompile("org.springframework.boot:spring-boot-starter-test") 
+}
+
+eclipse {
+    classpath {
+         containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+         containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7'
+    }
+}
+
+mainClassName = 'com.springcamp.integration.exercise.SpringIntegrationExerciseApplication'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
