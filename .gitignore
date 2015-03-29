@@ -3,9 +3,11 @@
 RouterServer/.gradle
 RouterServer/.idea
 RouterServer/build
+RouterServer/activemq-data
 SpringReceiveApp/.gradle
 SpringReceiveApp/.idea
 SpringReceiveApp/build
+SpringReceiveApp/activemq-data
 
 *.iml
 *.ipr
