@@ -12,20 +12,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class MessageRouterServiceImpl implements MessageRouterService {
 	@Autowired
-	private MessageChannel jmsChannel;
+	private MessageChannel jmsOutChannel;
 
-//	@Autowired
-//	private MessageChannel nodejsChannel;
+	@Autowired
+	private MessageChannel nodejsOutChannel;
 
 	@Override
 	public void sendAtJms(String messageContent) {
 		Message<String> message = MessageBuilder.withPayload(messageContent).build();
-		jmsChannel.send(message);
+		jmsOutChannel.send(message);
 	}
 
 	@Override
 	public void sendAtNodejs(String messageContent) {
-//		Message<String> message = MessageBuilder.withPayload(messageContent).build();
-//		nodejsChannel.send(message);
+		Message<String> message = MessageBuilder.withPayload(messageContent).build();
+		nodejsOutChannel.send(message);
 	}
 }

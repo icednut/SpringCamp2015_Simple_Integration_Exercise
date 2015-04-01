@@ -14,13 +14,13 @@ public class MessageRouterController {
 	@Autowired
 	private MessageRouterService service;
 
-	@RequestMapping(value = "/send/jms", method = RequestMethod.GET)
+	@RequestMapping(value = "/send/jms", method = {RequestMethod.GET, RequestMethod.POST})
 	public String jmsMessageSend(String messageContent) {
 		service.sendAtJms(messageContent);
 		return "[JMS Message] " + messageContent + " Send OK";
 	}
 
-	@RequestMapping(value = "/send/nodejs", method = RequestMethod.GET)
+	@RequestMapping(value = "/send/nodejs", method = {RequestMethod.GET, RequestMethod.POST})
 	public String nodejsMessage(String messageContent) {
 		service.sendAtNodejs(messageContent);
 		return "[NodeJS Message] " + messageContent + " Send OK";

@@ -2,6 +2,7 @@ package com.springcamp.integration.exercise.receiver.config;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.channel.DirectChannel;
@@ -22,12 +23,15 @@ import javax.jms.ConnectionFactory;
  */
 @Configuration
 public class MessageReceiveConfig {
+	@Value("${message.queue.url}")
+	private String messageQueueUrl;
+
 	@Bean
 	public ConnectionFactory connectionFactory() {
 		CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory();
 		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
 
-		connectionFactory.setBrokerURL("tcp://localhost:61616");
+		connectionFactory.setBrokerURL(messageQueueUrl);
 		cachingConnectionFactory.setTargetConnectionFactory(connectionFactory);
 		cachingConnectionFactory.setSessionCacheSize(10);
 		cachingConnectionFactory.setCacheProducers(false);
@@ -44,7 +48,6 @@ public class MessageReceiveConfig {
 
 	@Bean
 	public MessageChannel jmsInChannel() {
-//		return new QueueChannel(10);
 		return new DirectChannel();
 	}
 
@@ -65,18 +68,4 @@ public class MessageReceiveConfig {
 		EventDrivenConsumer consumer = new EventDrivenConsumer((SubscribableChannel) jmsInChannel(), messageStdoutPrinter);
 		return consumer;
 	}
-
-//	@Bean
-//	public EventDrivenConsumer jmsOutboundMessageAdapter() {
-//		JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory());
-//		jmsTemplate.setDefaultDestination(requestQueue());
-//		MessageHandler messageHandler = new JmsSendingMessageHandler(jmsTemplate);
-//		EventDrivenConsumer consumer = new EventDrivenConsumer(jmsOutChannel(), messageHandler);
-//		return consumer;
-//	}
-//
-//	@Bean
-//	public SubscribableChannel jmsOutChannel() {
-//		return new DirectChannel();
-//	}
 }
