@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:jms="http://www.springframework.org/schema/integration/jms"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd">
+
+    <int:channel id="messageChannel" />
+    
+    <int:service-activator input-channel="messageChannel"
+                           ref="messageStdoutPrinter"
+                           method="handleMessage"/>
+    
+    <jms:inbound-channel-adapter channel="messageChannel"
+                                 destination="requestQueue"
+                                 connection-factory="connectionFactory">
+        <int:poller fixed-rate="1000" />
+    </jms:inbound-channel-adapter>
+
+    <bean id="requestQueue" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="request.queue"/>
+    </bean>
+
+    <bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+        <property name="targetConnectionFactory">
+            <bean class="org.apache.activemq.ActiveMQConnectionFactory">
+                <property name="brokerURL" value="${message.queue.url}"/>
+            </bean>
+        </property>
+        <property name="sessionCacheSize" value="10"/>
+        <property name="cacheProducers" value="false"/>
+    </bean>
+
+    <bean id="messageStdoutPrinter" class="com.springcamp.integration.exercise.receiver.message.handler.MessageStdoutPrinter"/>
+</beans>
