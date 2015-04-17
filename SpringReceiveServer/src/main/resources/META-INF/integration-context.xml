@@ -11,11 +11,10 @@
                            ref="messageStdoutPrinter"
                            method="handleMessage"/>
     
-    <jms:inbound-channel-adapter channel="messageChannel"
-                                 destination="requestQueue"
-                                 connection-factory="connectionFactory">
-        <int:poller fixed-rate="1000" />
-    </jms:inbound-channel-adapter>
+    <jms:message-driven-channel-adapter id="jmsIn"
+                                        channel="messageChannel"
+                                        destination="requestQueue"
+                                        connection-factory="connectionFactory"/>
 
     <bean id="requestQueue" class="org.apache.activemq.command.ActiveMQQueue">
         <constructor-arg value="request.queue"/>
