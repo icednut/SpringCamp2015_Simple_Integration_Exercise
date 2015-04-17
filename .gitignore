@@ -1,5 +1,6 @@
 .DS_Store
 .idea/
+.idea/workspace.xml
 SpringSendServer/.gradle
 SpringSendServer/.idea
 SpringSendServer/build
