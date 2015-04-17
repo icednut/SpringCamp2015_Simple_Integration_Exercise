@@ -1,6 +1,7 @@
 package com.springcamp.integration.exercise.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -12,20 +13,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class MessageRouterServiceImpl implements MessageRouterService {
 	@Autowired
-	private MessageChannel jmsOutChannel;
+	private JmsSender jmsSender;
 
 	@Autowired
-	private MessageChannel nodejsOutChannel;
+	private NodejsSender nodejsSender;
 
 	@Override
 	public void sendAtJms(String messageContent) {
-		Message<String> message = MessageBuilder.withPayload(messageContent).build();
-		jmsOutChannel.send(message);
+		jmsSender.sendMessage(messageContent);
 	}
 
 	@Override
 	public void sendAtNodejs(String messageContent) {
-		Message<String> message = MessageBuilder.withPayload(messageContent).build();
-		nodejsOutChannel.send(message);
+		nodejsSender.sendMessage(messageContent);
 	}
 }
