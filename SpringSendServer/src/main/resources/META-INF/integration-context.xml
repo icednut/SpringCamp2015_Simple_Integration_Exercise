@@ -8,7 +8,7 @@
 
     <!-- jms send -->
     <int:channel id="jmsOutChannel"/>
-    
+
     <int:gateway id="jmsSender"
                  service-interface="com.springcamp.integration.exercise.service.JmsSender"
                  default-request-channel="jmsOutChannel"/>
