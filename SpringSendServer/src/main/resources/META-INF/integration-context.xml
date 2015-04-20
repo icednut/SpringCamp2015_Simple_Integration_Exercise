@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:jms="http://www.springframework.org/schema/integration/jms"
+       xmlns:int-http="http://www.springframework.org/schema/integration/http"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http.xsd">
+
+    <!-- jms send -->
+    <int:channel id="jmsOutChannel"/>
+
+    <int:gateway id="jmsSender"
+                 service-interface="com.springcamp.integration.exercise.service.JmsSender"
+                 default-request-channel="jmsOutChannel"/>
+    
+    <jms:outbound-channel-adapter id="jmsOut" 
+                                  channel="jmsOutChannel"
+                                  destination="requestQueue"
+                                  connection-factory="connectionFactory"/>
+
+    <bean id="requestQueue" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="request.queue"/>
+    </bean>
+
+    <bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+        <property name="targetConnectionFactory">
+            <bean class="org.apache.activemq.ActiveMQConnectionFactory">
+                <property name="brokerURL" value="${message.queue.url}"/>
+            </bean>
+        </property>
+        <property name="sessionCacheSize" value="10"/>
+        <property name="cacheProducers" value="false"/>
+    </bean>
+
+    <!-- nodejs send -->
+    <int:channel id="nodejsOutChannel"/>
+    
+    <int:gateway id="nodejsSender"
+                 service-interface="com.springcamp.integration.exercise.service.NodejsSender"
+                 default-request-channel="nodejsOutChannel"/>
+
+    <int-http:outbound-channel-adapter channel="nodejsOutChannel"
+                                       url="${nodejs.http.url}"
+                                       http-method="POST"
+                                       expected-response-type="java.lang.String"/>
+</beans>
